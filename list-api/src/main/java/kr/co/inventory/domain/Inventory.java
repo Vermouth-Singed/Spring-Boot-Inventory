@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +17,8 @@ import javax.persistence.Entity;
 @Builder
 @Accessors(chain = true)
 public class Inventory {
+    @Id
+    @GeneratedValue
     private String vin;
     private String model;
     private String make;

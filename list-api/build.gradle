@@ -4,6 +4,8 @@ plugins {
 	id 'java'
 }
 
+apply plugin: 'io.spring.dependency-management'
+
 group = 'kr.co'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -24,17 +26,28 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'mysql:mysql-connector-java'
+	implementation 'io.jsonwebtoken:jjwt-api:0.10.7'
+	runtime 'io.jsonwebtoken:jjwt-impl:0.10.7'
+	runtime 'io.jsonwebtoken:jjwt-jackson:0.10.7'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-	compile group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.5'
-	compile group: 'org.springframework.security', name: 'spring-security-core', version: '2.0.2'
 }
 
 test {
 	useJUnitPlatform()
+}
+
+jar {
+	enabled = true
+}
+
+bootJar {
+	enabled = false
 }

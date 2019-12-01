@@ -24,7 +24,7 @@ public class JwtUtil {
             builder = builder.claim("restaurantId", restaurantId);
         }
         return builder
-                .signWith(SignatureAlgorithm.HS256, key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
