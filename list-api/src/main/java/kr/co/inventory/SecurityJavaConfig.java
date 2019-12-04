@@ -2,6 +2,7 @@ package kr.co.inventory;
 
 import kr.co.inventory.filters.JwtAuthenticationFilter;
 import kr.co.inventory.utils.JwtUtil;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,9 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.servlet.Filter;
 
 @Configuration
+@EnableConfigurationProperties(SecurityJavaConfig.class)
 @EnableWebSecurity
 public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
 
+//    @Value("${jwt.secret}")
     private String secret = "12345678901234567890123456789012";
 
     @Override

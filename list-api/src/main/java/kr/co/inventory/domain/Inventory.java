@@ -20,11 +20,18 @@ public class Inventory {
     @Id
     @GeneratedValue
     private String vin;
+
     private String model;
+
     private String make;
+
     private Integer year;
+
     private Long msrp;
+
     private String status;
+
     private boolean booked;
+
     private boolean listed;
 }
