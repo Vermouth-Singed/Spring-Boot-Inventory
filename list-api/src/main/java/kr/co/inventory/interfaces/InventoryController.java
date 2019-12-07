@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/inventory")
+@RequestMapping("/api/inventory")
 @RestController
 public class InventoryController {
     private InventoryService inventoryService;
@@ -17,6 +17,11 @@ public class InventoryController {
     @Autowired
     InventoryController(InventoryService inventoryService){
         this.inventoryService = inventoryService;
+    }
+
+    @GetMapping("/")
+    public List<Inventory> readInventoryAllList(){
+        return inventoryService.readInventoryAllList();
     }
 
     @GetMapping("/{vin}")

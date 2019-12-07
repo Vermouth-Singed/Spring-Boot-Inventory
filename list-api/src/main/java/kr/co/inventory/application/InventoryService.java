@@ -17,6 +17,10 @@ public class InventoryService {
         this.inventoryRepository = inventoryRepository;
     }
 
+    public List<Inventory> readInventoryAllList() {
+        return inventoryRepository.findAll();
+    }
+
     public List<Inventory> readInventoryList(String vin) {
         return inventoryRepository.findAllById(Collections.singleton(vin));
     }

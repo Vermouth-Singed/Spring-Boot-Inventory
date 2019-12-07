@@ -1,9 +1,9 @@
-rootProject.name = 'inventory'
-
-include 'list-api'
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
     }
 }
+
+rootProject.name = 'inventory'
+
+include 'list-api'
