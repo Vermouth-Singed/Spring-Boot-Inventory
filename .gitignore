@@ -56,3 +56,4 @@ out/
 .vscode/
 
 lib
+/list-view/node_modules/
