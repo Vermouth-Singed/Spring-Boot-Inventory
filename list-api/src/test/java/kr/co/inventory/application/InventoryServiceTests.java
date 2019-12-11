@@ -24,7 +24,7 @@ public class InventoryServiceTests {
     private InventoryRepository inventoryRepository;
 
     @Test
-    void getInventory() {
+    void readInventoryList() {
         when(inventoryRepository.findById("MN3434"))
                 .thenReturn(Optional.of(mockInventory()));
 
@@ -42,7 +42,7 @@ public class InventoryServiceTests {
     }
 
     @Test
-    void modify() {
+    void updateInventory() {
         when(inventoryRepository.findById("MN3434"))
                 .thenReturn(Optional.of(mockInventory()));
 
@@ -52,7 +52,7 @@ public class InventoryServiceTests {
     }
 
     @Test
-    void delete() {
+    void deleteInventory() {
         when(inventoryRepository.findById("MN3434"))
                 .thenReturn(Optional.of(mockInventory()));
 

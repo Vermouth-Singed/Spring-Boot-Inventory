@@ -7,6 +7,8 @@ import kr.co.inventory.repositories.InventoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @Transactional
+@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class InventoryControllerTests {
     @Autowired
     private WebApplicationContext wac;
@@ -33,10 +36,10 @@ public class InventoryControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private MockMvc mockMvc;
-
     @Autowired
     InventoryRepository inventoryRepository;
+
+    private MockMvc mockMvc;
 
     @BeforeEach
     void beforeEach() {
@@ -47,7 +50,7 @@ public class InventoryControllerTests {
     }
 
     @Test
-    void getInventory() throws Exception {
+    void readInventoryList() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/inventory/MN3434"))
                 .andExpect(status().isOk())
@@ -61,7 +64,7 @@ public class InventoryControllerTests {
     }
 
     @Test
-    void postInventory() throws Exception {
+    void createInventory() throws Exception {
         Inventory dto = Inventory.of("SLF4J88","Unicorn","AUDI",2019,23300L,"Ordered","Y","Y");
 
         mockMvc.perform(
@@ -88,7 +91,7 @@ public class InventoryControllerTests {
     }
 
     @Test
-    void modifyInventory() throws Exception {
+    void updateInventory() throws Exception {
         Inventory dto = Inventory.of("MN3434","Unicorn","AUDI",2019,23300L,"Ordered","Y","Y");
 
         mockMvc.perform(

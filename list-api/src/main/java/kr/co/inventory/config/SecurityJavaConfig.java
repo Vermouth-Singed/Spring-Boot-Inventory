@@ -1,7 +1,8 @@
-package kr.co.inventory;
+package kr.co.inventory.config;
 
 import kr.co.inventory.filters.JwtAuthenticationFilter;
 import kr.co.inventory.utils.JwtUtil;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.Filter;
 
+@ConfigurationProperties("target")
 @Configuration
 @EnableConfigurationProperties(SecurityJavaConfig.class)
 @EnableWebSecurity
@@ -47,5 +49,4 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
     public JwtUtil jwtUtil() {
         return new JwtUtil(secret);
     }
-
 }
