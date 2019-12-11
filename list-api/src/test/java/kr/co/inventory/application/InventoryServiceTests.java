@@ -34,8 +34,8 @@ public class InventoryServiceTests {
                     .setYear(inventory.getYear())
                     .setMsrp(inventory.getMsrp())
                     .setStatus(inventory.getStatus())
-                    .setBooked(inventory.isBooked())
-                    .setListed(inventory.isListed());
+                    .setBooked(inventory.getBooked())
+                    .setListed(inventory.getListed());
 
             assertThat(inventory.getVin()).isEqualTo("MN3434");
         });
@@ -69,6 +69,6 @@ public class InventoryServiceTests {
     }
 
     private Inventory mockInventory(){
-        return Inventory.of("MN3434","320i","BMW",2013,10000L,"Ordered",true,true);
+        return Inventory.of("MN3434","320i","BMW",2013,10000L,"Ordered","Y","Y");
     }
 }

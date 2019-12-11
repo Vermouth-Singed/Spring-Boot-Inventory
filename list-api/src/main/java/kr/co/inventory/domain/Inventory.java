@@ -31,7 +31,7 @@ public class Inventory {
 
     private String status;
 
-    private boolean booked;
+    private String booked;
 
-    private boolean listed;
+    private String listed;
 }

@@ -36,8 +36,8 @@ public class InventoryService {
                      .setYear(item.getYear())
                      .setMsrp(item.getMsrp())
                      .setStatus(item.getStatus())
-                     .setBooked(item.isBooked())
-                     .setListed(item.isListed());
+                     .setBooked(item.getBooked())
+                     .setListed(item.getListed());
 
             inventoryRepository.save(inventory);
         });

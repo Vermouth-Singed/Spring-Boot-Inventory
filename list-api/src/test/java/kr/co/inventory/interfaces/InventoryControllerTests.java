@@ -62,7 +62,7 @@ public class InventoryControllerTests {
 
     @Test
     void postInventory() throws Exception {
-        Inventory dto = Inventory.of("SLF4J88","Unicorn","AUDI",2019,23300L,"Ordered",true,true);
+        Inventory dto = Inventory.of("SLF4J88","Unicorn","AUDI",2019,23300L,"Ordered","Y","Y");
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/Inventory")
@@ -81,15 +81,15 @@ public class InventoryControllerTests {
                     () -> assertThat(result.getYear()).isEqualTo(2019),
                     () -> assertThat(result.getMsrp()).isEqualTo(23300L),
                     () -> assertThat(result.getStatus()).isEqualTo("Ordered"),
-                    () -> assertThat(result.isBooked()).isEqualTo(true),
-                    () -> assertThat(result.isListed()).isEqualTo(true)
+                    () -> assertThat(result.getBooked()).isEqualTo(true),
+                    () -> assertThat(result.getListed()).isEqualTo(true)
             );
         }
     }
 
     @Test
     void modifyInventory() throws Exception {
-        Inventory dto = Inventory.of("MN3434","Unicorn","AUDI",2019,23300L,"Ordered",true,true);
+        Inventory dto = Inventory.of("MN3434","Unicorn","AUDI",2019,23300L,"Ordered","Y","Y");
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/inventory/MN3434")
@@ -108,8 +108,8 @@ public class InventoryControllerTests {
                     () -> assertThat(result.getYear()).isEqualTo(2019),
                     () -> assertThat(result.getMsrp()).isEqualTo(23300L),
                     () -> assertThat(result.getStatus()).isEqualTo("Ordered"),
-                    () -> assertThat(result.isBooked()).isEqualTo(true),
-                    () -> assertThat(result.isListed()).isEqualTo(true)
+                    () -> assertThat(result.getBooked()).isEqualTo(true),
+                    () -> assertThat(result.getListed()).isEqualTo(true)
             );
         }
     }
