@@ -36,7 +36,7 @@ public class InventoryControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @Autowired(required = false)
     InventoryRepository inventoryRepository;
 
     private MockMvc mockMvc;

@@ -2,20 +2,19 @@ package kr.co.inventory.application;
 
 import kr.co.inventory.domain.Inventory;
 import kr.co.inventory.repositories.InventoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Service
 public class InventoryService {
-    private InventoryRepository inventoryRepository;
 
-    @Autowired
-    InventoryService(InventoryRepository inventoryRepository){
-        this.inventoryRepository = inventoryRepository;
-    }
+    @Autowired(required = false)
+    private InventoryRepository inventoryRepository;
 
     public List<Inventory> readInventoryAllList() {
         return inventoryRepository.findAll();

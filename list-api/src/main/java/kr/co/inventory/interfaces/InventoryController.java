@@ -2,6 +2,7 @@ package kr.co.inventory.interfaces;
 
 import kr.co.inventory.application.InventoryService;
 import kr.co.inventory.domain.Inventory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,15 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RequestMapping("/api/inventory")
 @RestController
 public class InventoryController {
-    private InventoryService inventoryService;
 
-    @Autowired
-    InventoryController(InventoryService inventoryService){
-        this.inventoryService = inventoryService;
-    }
+    @Autowired(required = false)
+    private InventoryService inventoryService;
 
     @GetMapping("/")
     public List<Inventory> readInventoryAllList(){
