@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 public class InventoryController {
 
-    @Autowired(required = false)
+    @Autowired
     private InventoryService inventoryService;
 
     @GetMapping("/")

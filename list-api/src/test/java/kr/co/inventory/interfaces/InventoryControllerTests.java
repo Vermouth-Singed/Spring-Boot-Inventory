@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class InventoryControllerTests {
+
     @Autowired
     private WebApplicationContext wac;
 
