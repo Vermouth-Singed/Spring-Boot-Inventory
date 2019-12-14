@@ -5,3 +5,5 @@
 멀티프로젝트 구조로 개발진행 후 최종적으로는 도커로 연동 예정
 
 TDD (Test Driven Development)
+
+`postman mock server 를 활용한 프론트엔드 개발 진행중...`
