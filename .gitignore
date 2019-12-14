@@ -21,6 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
 
 package-lock.json
 HELP.md
@@ -57,3 +58,4 @@ out/
 
 lib
 /list-view/node_modules/
+/list-view/dist/
