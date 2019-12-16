@@ -243,63 +243,25 @@ export default {
         align: 'center'
       }
     ],
-    items: [
-      {
-        no: 1,
-        vin: 'MN3434',
-        model: '320i',
-        make: 'BMW',
-        year: '2013',
-        msrp: '10,000',
-        status: 'Ordered',
-        booked: 'y',
-        listed: 'y',
-        checked: false
-      },
-      {
-        no: 2,
-        vin: '4JGD343',
-        model: 'C200',
-        make: 'BENZ',
-        year: '2014',
-        msrp: '20,000',
-        status: 'In stock',
-        booked: 'n',
-        listed: 'n',
-        checked: false
-      },
-      {
-        no: 3,
-        vin: 'GF4343',
-        model: '520d',
-        make: 'BMW',
-        year: '2014',
-        msrp: '33,400',
-        status: 'Sold',
-        booked: 'n',
-        listed: 'y',
-        checked: false
-      }
-    ]
+    items: []
   }),
-  created : function(){
+  mounted : function(){
     this.$http({
       method:"GET",
-      // url:"http://api.hrfco.go.kr/EB64C218-F1E1-4637-90E2-1FE504975BAE/rainfall/info.json",
-      url : "/#/inventory",
+      url : "https://6ee34443-e28d-4dfc-9771-56cf7a065c4b.mock.pstmn.io/api/inventory",
       params:{}
-    }).then((response)=>{
-      console.log("성공!!", response);
-    });
+    }).then(response => {
+      this.items = response.data;
 
-    this.fcUpdateSelect();
-    this.fcUpdateFilter();
+      this.fcUpdateSelect();
+      this.fcUpdateFilter();
+    });
   },
   methods: {
     fcUpdateFilter : function(){
       this.filterItems = [];
 
-      this.items.forEach((element)=>{
+      this.items.forEach(element => {
         if(this.modelSelect.indexOf(element.model) > -1 && 
             this.makeSelect.indexOf(element.make) > -1 && 
             this.yearSelect.indexOf(element.year) > -1){
@@ -315,7 +277,7 @@ export default {
       this.makeItems = [];
       this.yearItems = [];
 
-      this.items.forEach((element)=>{
+      this.items.forEach(element=>{
         if(this.modelItems.indexOf(element.model) < 0)
           this.modelItems = [...this.modelItems, element.model];
 
@@ -369,9 +331,9 @@ export default {
     },
     fcMinusItem : function(){
       if(confirm("삭제하시겠습니까?")){
-        for(var i = 0; i < this.filterItems.length; i++){
+        for(let i = 0; i < this.filterItems.length; i++){
           if(this.filterItems[i].checked){
-            for(var j = 0; j < this.items.length; j++){
+            for(let j = 0; j < this.items.length; j++){
               if(this.items[j].no == this.filterItems[i].no){
                 this.items.splice(j, 1);
                 break;
@@ -394,7 +356,7 @@ export default {
       },1500);
     },
     fcCheckAll : function(event){
-      this.filterItems.forEach((element)=>{
+      this.filterItems.forEach(element=>{
         element.checked = event;
       });
     }
