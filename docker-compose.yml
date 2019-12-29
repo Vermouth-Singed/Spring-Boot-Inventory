@@ -1,64 +1,40 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
-
-version: '3.7'
-
-# Define services
+version: '3'
 services:
-  # App backend service
-  app-server:
-    # Configuration for building the docker image for the backend service
-    build:
-      context: list-api # Use an image built from the specified dockerfile in the `polling-app-server` directory.
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
-    restart: always
-    depends_on:
-      - db # This service depends on mysql. Start that first.
-    environment: # Pass environment variables to the service
-      SPRING_DATASOURCE_URL: jdbc:mysql://vermouth.ipdisk.co.kr:3306/qhddusl?useSSL=false&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
-      SPRING_DATASOURCE_USERNAME: qhddusl
-      SPRING_DATASOURCE_PASSWORD: qhddusl2004
-    networks: # Networks to join (Services on the same network can communicate with each other using their name)
-      - backend
-      - frontend
-
-  # Frontend Service
-  app-client:
-    build:
-      context: list-view # Use an image built from the specified dockerfile in the `polling-app-client` directory.
-      dockerfile: Dockerfile
-      args:
-        VUE_APP_API_BASE_URL: http://127.0.0.1:8080/api
-    ports:
-      - "9090:80" # Map the exposed port 80 on the container to port 9090 on the host machine
-    restart: always
-    depends_on:
-      - app-server
-    networks:
-      - frontend
-
-  # Database Service (Mysql)
-  db:
+  mysql:
     image: mysql:5.5
-    ports:
-      - "3306:3306"
-    restart: always
-    environment:
-      MYSQL_DATABASE: qhddusl
-      MYSQL_USER: qhddusl
-      MYSQL_PASSWORD: qhddusl2004
-      MYSQL_ROOT_PASSWORD: root
+    env_file: .env.default
     volumes:
       - db-data:/var/lib/mysql
-    networks:
-      - backend
-
-# Volumes
-volumes:
-  db-data:
-
-# Networks to be created to facilitate communication between containers
-networks:
-  backend:
-  frontend:
+    ports:
+      - 13306:3306
+    command: |
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+  list-api:
+    image: openjdk:8
+    env_file: .env.default
+    volumes:
+      - ./run.sh:/home/inventory/run.sh
+      - ./list-api/build/libs:/home/inventory/libs
+    ports:
+      - 8004:8080
+    depends_on:
+      - mysql
+    command: bash -c "cd /home/inventory && sh run.sh"
+  list-view:
+    image: node:10.16.3
+    volumes:
+      - ./list-view:/home/inventory
+    ports:
+      - 8084:3000
+    environment:
+      - VUE_APP_API_BASE_URL=http://localhost:8004
+    command: bash -c "cd /home/inventory && npm run serve"
+    healthcheck:
+      test: curl -sS http://localhost:8080 || exit 1
+      timeout: 10s
+      retries: 10
