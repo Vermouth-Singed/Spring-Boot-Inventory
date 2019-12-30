@@ -248,8 +248,8 @@ export default {
   mounted : function(){
     this.$http({
       method:"GET",
-      //url : "https://6ee34443-e28d-4dfc-9771-56cf7a065c4b.mock.pstmn.io/api/inventory"
-      url : "/"
+      // url : "https://6ee34443-e28d-4dfc-9771-56cf7a065c4b.mock.pstmn.io/api/inventory"
+      url : "/api/inventory"
     }).then(response => {
       this.items = response.data;
 

@@ -4,7 +4,7 @@ services:
     image: mysql:5.5
     env_file: .env.default
     volumes:
-      - db-data:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
     ports:
       - 13306:3306
     command: |
