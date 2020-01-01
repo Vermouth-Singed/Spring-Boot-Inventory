@@ -72,10 +72,10 @@
             </template>
             <template
               slot="items"
-              slot-scope="{ item }"
+              slot-scope="{ item,index }"
             >
               <td><v-checkbox v-model="item.checked"></v-checkbox></td>
-              <td class="text-xs-center">{{ item.no }}</td>
+              <td class="text-xs-center">{{ index + 1 }}</td>
               <td class="text-xs-center">{{ item.vin }}</td>
               <td class="text-xs-center">{{ item.model }}</td>
               <td class="text-xs-center">{{ item.make }}</td>
@@ -145,7 +145,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="fcAddItem">Save</v-btn>
+              <v-btn color="blue darken-1" flat @click="fcAddItem" v-show="dontShowSave">Save</v-btn>
               <v-btn color="blue darken-1" flat @click="dialog = false">Cancel</v-btn>
             </v-card-actions>
           </v-card>
@@ -170,7 +170,6 @@ export default {
       status : "In stock",
       booked : "",
       listed : "",
-      no : 0,
       checked : false
     },
     modelSelect : [],
@@ -189,7 +188,7 @@ export default {
         align: 'center'
       },
       {
-        sortable: true,
+        sortable: false,
         text: 'No',
         value: 'no',
         align: 'center'
@@ -245,10 +244,20 @@ export default {
     ],
     items: []
   }),
+  computed : {
+    dontShowSave : function(){
+      for(let key in this.inventoryForm){
+        if(this.inventoryForm[key] === ""){
+          return false;
+        }
+      }
+
+      return true;
+    }
+  },
   mounted : function(){
     this.$http({
-      method:"GET",
-      // url : "https://6ee34443-e28d-4dfc-9771-56cf7a065c4b.mock.pstmn.io/api/inventory"
+      method : "GET",
       url : "/api/inventory"
     }).then(response => {
       this.items = response.data;
@@ -292,60 +301,57 @@ export default {
       this.makeSelect = [...this.makeItems];
       this.yearSelect = [...this.yearItems];
     },
-    fcAddItem : function(){
-      for(let key in this.inventoryForm){
-        if(this.inventoryForm[key] === ""){
-          alert("빈칸이 존재합니다.");
-          this.noValueAlert = true;
+    fcAddItem : async function(){
+      await this.$http({
+        method : "GET",
+        url : "/api/inventory/"+this.inventoryForm.vin
+      }).then(response => {
+        if(response.data != null && response.data.length > 0){
+          alert("중복값이 존재합니다.");
           return;
         }
-      }
+      });
 
       if(confirm("저장하시겠습니까?")){
-        let maxCount = 1;
+        await this.$http({
+          method : "POST",
+          url : "/api/inventory",
+          params : this.inventoryForm
+        }).then(() => {
+          alert("저장되었습니다.");
 
-        for(let i = 0; i < this.items.length; i++){
-          maxCount = this.items[i].no > maxCount ? this.items[i].no : maxCount;
-        }
+          this.inventoryForm = {
+            vin : "",
+            model : "",
+            make : "",
+            year : "",
+            msrp : "",
+            status : "In stock",
+            booked : "",
+            listed : ""
+          };
+  
+          this.dialog = this.noValueAlert = this.allCheck = false;
 
-        this.inventoryForm.no = this.items.length == 0 ? 1 : maxCount+1;
-        this.items = [...this.items, this.inventoryForm];
-
-        this.inventoryForm = {
-          vin : "",
-          model : "",
-          make : "",
-          year : "",
-          msrp : "",
-          status : "In stock",
-          booked : "",
-          listed : "",
-          no : 0,
-          checked : false
-        };
-
-        this.dialog = this.noValueAlert = this.allCheck = false;
-        this.fcUpdateSelect();
-        this.fcUpdateFilter();
+          this.fcUpdateSelect();
+          this.fcUpdateFilter();
+        });
       }
+
     },
     fcMinusItem : function(){
       if(confirm("삭제하시겠습니까?")){
-        for(let i = 0; i < this.filterItems.length; i++){
-          if(this.filterItems[i].checked){
-            for(let j = 0; j < this.items.length; j++){
-              if(this.items[j].no == this.filterItems[i].no){
-                this.items.splice(j, 1);
-                break;
-              }
-            }
-          }
-        }
+        this.filterItems.filter(item => item.checked).forEach(item => {
+          this.$http({
+            method : "DELETE",
+            url : "/api/inventory/"+item.vin
+          }).then(() => {
+            this.noValueAlert = this.allCheck = false;
 
-        this.noValueAlert = this.allCheck = false;
-
-        this.fcUpdateSelect();
-        this.fcUpdateFilter();
+            this.fcUpdateSelect();
+            this.fcUpdateFilter();
+          });
+        });
       }
     },
     fcUploadFile : function(){
