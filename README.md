@@ -6,4 +6,4 @@
 
 TDD (Test Driven Development)
 
-`postman mock server 를 활용한 프론트엔드 개발 진행중...`
+`docker-compose 세팅중...`
